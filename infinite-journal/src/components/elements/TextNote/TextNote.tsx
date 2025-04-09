@@ -31,9 +31,7 @@ export function TextNote({ index, onDelete }: Props) {
             placeholder={`Write something for note ${index + 1}...`}
             rows={4}
           />
-          {onDelete && (
-            <button className={styles.deleteButton} onClick={handleDelete}><X size={16} /></button>
-          )}
+          
         </motion.div>
       )}
     </AnimatePresence>
