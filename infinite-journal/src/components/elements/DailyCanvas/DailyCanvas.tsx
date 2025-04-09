@@ -19,6 +19,12 @@ export function DailyCanvas({ date }: Props) {
     setMenuOpen(false);
   };
 
+  const deleteElement = (i: number) => {
+    const updated = [...elements];
+    updated.splice(i, 1);
+    setElements(updated);
+  };
+
   return (
     <div className={`${styles.canvasBlock} ${styles[theme]}`}>
       <div className={styles.canvasHeader}>
@@ -33,9 +39,10 @@ export function DailyCanvas({ date }: Props) {
 
       <div className={styles.elementsContainer}>
         {elements.map((el, i) => {
-          if (el.type === 'text') return <TextNote key={i} index={i} />;
-          if (el.type === 'image') return <ImageEmbed key={i} index={i} />;
-          if (el.type === 'youtube') return <YoutubeEmbed key={i} index={i} />;
+          const commonProps = { index: i, onDelete: () => deleteElement(i) };
+          if (el.type === 'text') return <TextNote key={i} {...commonProps} />;
+          if (el.type === 'image') return <ImageEmbed key={i} {...commonProps} />;
+          if (el.type === 'youtube') return <YoutubeEmbed key={i} {...commonProps} />;
           return null;
         })}
       </div>
