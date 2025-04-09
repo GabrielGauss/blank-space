@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import styles from './ImageEmbed.module.css';
 
 interface Props {
   index: number;
@@ -8,15 +9,15 @@ export function ImageEmbed({ index }: Props) {
   const [url, setUrl] = useState('');
 
   return (
-    <div>
+    <div className={styles.container}>
       <input
         type="text"
         placeholder="Paste image URL"
         value={url}
         onChange={(e) => setUrl(e.target.value)}
-        className="w-full p-2 border rounded mb-2"
+        className={styles.input}
       />
-      {url && <img src={url} alt={`Image ${index + 1}`} className="max-w-full rounded" />}
+      {url && <img src={url} alt={`Image ${index + 1}`} className={styles.image} />}
     </div>
   );
 }

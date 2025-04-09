@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { DailyCanvas } from './components/DailyCanvas';
+import { DailyCanvas } from './components/elements/DailyCanvas/DailyCanvas';
+import { Header } from './components/Header/Header';
 
 function App() {
   const [days, setDays] = useState([new Date().toISOString().split('T')[0]]);
@@ -12,16 +13,20 @@ function App() {
   };
 
   return (
-    <div className="flex flex-col items-center min-h-screen w-full bg-gray-100">
+    <div className="flex flex-col w-full min-h-screen overflow-y-auto bg-gradient-to-b from-gray-100 to-gray-200">
+          <Header />
+
       {days.map((date) => (
         <DailyCanvas key={date} date={date} />
       ))}
-      <button
-        className="my-8 px-6 py-3 bg-black text-white rounded-full shadow-md hover:bg-gray-800"
-        onClick={addNewDay}
-      >
-        + Add New Blank
-      </button>
+      <div className="sticky bottom-0 z-10 flex justify-center py-4 bg-white shadow-inner">
+        <button
+          className="px-6 py-3 bg-black text-white rounded-full shadow-lg hover:bg-gray-800"
+          onClick={addNewDay}
+        >
+          + Add New Blank
+        </button>
+      </div>
     </div>
   );
 }

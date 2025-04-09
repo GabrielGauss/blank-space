@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import styles from './YoutubeEmbed.module.css';
 
 interface Props {
   index: number;
@@ -13,17 +14,17 @@ export function YoutubeEmbed({ index }: Props) {
   };
 
   return (
-    <div>
+    <div className={styles.container}>
       <input
         type="text"
         placeholder="Paste YouTube URL"
         value={url}
         onChange={(e) => setUrl(e.target.value)}
-        className="w-full p-2 border rounded mb-2"
+        className={styles.input}
       />
       {url && (
         <iframe
-          className="w-full rounded"
+          className={styles.iframe}
           height="315"
           src={getEmbedUrl(url)}
           title={`YouTube video ${index + 1}`}
