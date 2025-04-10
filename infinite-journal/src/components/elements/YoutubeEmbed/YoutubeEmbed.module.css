@@ -1,39 +1,45 @@
+/* Wrapper for draggable YouTube embed */
+.rndWrapper {
+  position: absolute;
+  z-index: 10;
+}
+
+/* Main container inside the resizable wrapper */
 .container {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-  
-  .input {
-    width: 100%;
-    padding: 0.5rem;
-    border: 1px solid #ccc;
-    border-radius: 0.375rem;
-    font-size: 0.875rem;
-  }
-  
-  .previewWrapper {
-    position: relative;
-  }
-  
-  .iframe {
-    width: 100%;
-    border: none;
-    border-radius: 0.375rem;
-  }
-  
-  .deleteButton {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    background-color: rgba(0, 0, 0, 0.6);
-    border: none;
-    color: rgb(14, 13, 13);
-    padding: 0.25rem;
-    border-radius: 50%;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+  height: 100%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  background-color: #ffffff;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  padding: 0.75rem;
+  box-sizing: border-box;
+}
+
+/* Input for pasting the YouTube URL */
+.input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+}
+
+/* Contains the video player */
+.previewWrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* Embedded YouTube iframe */
+.iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 0.375rem;
+  background-color: #000;
+}

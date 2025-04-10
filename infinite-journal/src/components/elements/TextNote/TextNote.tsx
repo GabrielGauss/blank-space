@@ -1,119 +1,81 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import styles from './TextNote.module.css'; // Ensure this CSS module exists
+import { Rnd } from 'react-rnd';
+import styles from './TextNote.module.css';
 
-// Define the Props interface for the TextNote component
 interface Props {
   index: number;
-  // Optional prop to receive initial text content
   initialText?: string;
-  // Optional prop to handle text changes externally
   onTextChange?: (index: number, newText: string) => void;
+  position?: { x: number; y: number };
+  updatePosition?: (index: number, x: number, y: number) => void;
+  tileRefs?: React.MutableRefObject<(HTMLDivElement | null)[]>;
 }
 
-// TextNote component: A resizable text area for notes
-const TextNote = ({ index, initialText = '', onTextChange }: Props) => {
-  // State to manage the text content of the textarea
+const SNAP_THRESHOLD = 15;
+
+const TextNote = ({ index, initialText = '', onTextChange, position, updatePosition, tileRefs }: Props) => {
   const [text, setText] = useState(initialText);
-  // Ref to the textarea DOM element for direct manipulation
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  // State to manage text formatting options
+
   const [isBold, setIsBold] = useState(false);
   const [isItalic, setIsItalic] = useState(false);
   const [isUnderline, setIsUnderline] = useState(false);
   const [isStrikethrough, setIsStrikethrough] = useState(false);
 
-  // Auto-resize textarea on mount and when text changes
   useEffect(() => {
-    resizeTextarea();
-  }, [text]);
-
-  // Update local state when initialText prop changes (for controlled components)
-  useEffect(() => {
-    if (initialText !== undefined && initialText !== text) {
-      setText(initialText);
-      // Trigger resize again in case initial text is long
-      resizeTextarea();
-    }
-  }, [initialText, text]);
-
-  // Function to dynamically resize the textarea based on its content
-  const resizeTextarea = () => {
     if (textareaRef.current) {
-      // Reset the height to 'auto' to allow scrollHeight to be accurate
       textareaRef.current.style.height = 'auto';
-      // Set the height to the scrollHeight, effectively fitting the content
       textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
     }
-  };
+  }, [text]);
 
-  // Function to handle changes in the textarea input
   const handleTextChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newText = event.target.value;
-    // Update the local state
     setText(newText);
-    // Call the external onTextChange handler if provided
-    if (onTextChange) {
-      onTextChange(index, newText);
-    }
-    // Resize the textarea immediately as the text changes
-    resizeTextarea();
+    onTextChange?.(index, newText);
   };
 
-  // Functions to toggle text formatting options
-  const toggleBold = () => {
-    setIsBold(!isBold);
-  };
+  const handleDragStop = (e: any, d: any) => {
+    let finalX = d.x;
+    let finalY = d.y;
 
-  const toggleItalic = () => {
-    setIsItalic(!isItalic);
-  };
+    tileRefs?.current.forEach((el, i) => {
+      if (i === index || !el) return;
+      const rect = el.getBoundingClientRect();
 
-  const toggleUnderline = () => {
-    setIsUnderline(!isUnderline);
-  };
+      if (Math.abs(rect.left - d.x) < SNAP_THRESHOLD) finalX = rect.left;
+      if (Math.abs(rect.top - d.y) < SNAP_THRESHOLD) finalY = rect.top;
+    });
 
-  const toggleStrikethrough = () => {
-    setIsStrikethrough(!isStrikethrough);
+    updatePosition?.(index, finalX, finalY);
   };
 
   return (
-    <motion.div
-      className={styles.wrapper}
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, scale: 0.95 }}
-      transition={{ duration: 0.3 }}
+    <Rnd
+      default={{ x: position?.x || 100, y: position?.y || 100, width: 260, height: 200 }}
+      bounds="parent"
+      minWidth={180}
+      minHeight={140}
+      className={styles.rndWrapper}
+      onDragStop={handleDragStop}
     >
-      {/* Optional Toolbar for Text Formatting */}
-      <div className={styles.toolbar}>
-        <button type="button" onClick={toggleBold} className={isBold ? styles.active : ''}>
-          B
-        </button>
-        <button type="button" onClick={toggleItalic} className={isItalic ? styles.active : ''}>
-          <em style={{ fontStyle: 'italic' }}>I</em>
-        </button>
-        <button type="button" onClick={toggleUnderline} className={isUnderline ? styles.active : ''}>
-          <span style={{ textDecoration: 'underline' }}>U</span>
-        </button>
-        <button type="button" onClick={toggleStrikethrough} className={isStrikethrough ? styles.active : ''}>
-          <span style={{ textDecoration: 'line-through' }}>S</span>
-        </button>
-        {/* Add more formatting options here */}
-      </div>
-      <textarea
-        ref={textareaRef}
-        className={`${styles.textarea} ${isBold ? styles.bold : ''} ${
-          isItalic ? styles.italic : ''
-        } ${isUnderline ? styles.underline : ''} ${
-          isStrikethrough ? styles.strikethrough : ''
-        }`}
-        placeholder={`Write something for note ${index + 1}...`}
-        value={text}
-        onChange={handleTextChange}
-        rows={4} // Initial number of visible rows
-      />
-    </motion.div>
+      <motion.div className={styles.wrapper}>
+        <div className={styles.toolbar}>
+          <button onClick={() => setIsBold(!isBold)} className={isBold ? styles.active : ''}>B</button>
+          <button onClick={() => setIsItalic(!isItalic)} className={isItalic ? styles.active : ''}><em>I</em></button>
+          <button onClick={() => setIsUnderline(!isUnderline)} className={isUnderline ? styles.active : ''}><u>U</u></button>
+          <button onClick={() => setIsStrikethrough(!isStrikethrough)} className={isStrikethrough ? styles.active : ''}><s>S</s></button>
+        </div>
+        <textarea
+          ref={textareaRef}
+          className={`${styles.textarea} ${isBold ? styles.bold : ''} ${isItalic ? styles.italic : ''} ${isUnderline ? styles.underline : ''} ${isStrikethrough ? styles.strikethrough : ''}`}
+          placeholder={`Write something for note ${index + 1}...`}
+          value={text}
+          onChange={handleTextChange}
+        />
+      </motion.div>
+    </Rnd>
   );
 };
 

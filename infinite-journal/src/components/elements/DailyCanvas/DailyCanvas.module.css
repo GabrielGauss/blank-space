@@ -4,13 +4,12 @@
 .bgGreen  { background-color: #d1fae5; }
 .bgPink   { background-color: #fce7f3; }
 
-/* ───── entry edit ───── */
-
+/* ───── Entry Header ───── */
 .dateTitleRow {
   display: flex;
-  flex-direction: row;
-  margin-top: 3rem ;
   gap: 1rem;
+  margin-top: 3rem;
+  flex-direction: row;
 }
 
 .entryMeta {
@@ -18,55 +17,19 @@
   gap: 0.5rem;
   align-items: center;
   width: 40vw;
-
 }
 
 .entryTitle {
   font-size: 1rem;
   padding: 0.4rem 0.6rem;
-  border: 0px 0px 1px  solid #ccc;
+  border: 1px solid #ccc;
   border-radius: 6px;
   flex: 1;
-  color: #242424;
   background-color: transparent;
+  color: #242424;
 }
 
-/* Emoji del titulo */
-.moodInput { 
-  font-size: 1.5rem;
-  width: 3rem;
-  text-align: center;
-  background: transparent;
-  /* border: 1px dashed #aaa; */
-  border-radius: 6px;
-}
-
-
-
-
-
-
-
-
-/* ───── Emoji & Editable Input ───── */
-.emoji {
-  font-size: 1.25rem;
-  display: block;
-  margin-bottom: 0.25rem;
-  cursor: pointer;
-  user-select: none;
-}
-
-.emojiInput {
-  font-size: 1.25rem;
-  width: 2.5rem;
-  border: none;
-  background: transparent;
-  border-bottom: 1px dashed #131313;
-  text-align: center;
-}
-
-/* ───── Tile Meta / Edit Buttons ───── */
+/* ───── Tile Meta & Pencil ───── */
 .tileMeta {
   display: flex;
   justify-content: space-between;
@@ -84,10 +47,10 @@
 
 .tile:hover .pencilActions {
   opacity: 1;
+  z-index: 20;
 }
 
-.pencilToggle,
-.deleteButton {
+.pencilToggle {
   background: transparent;
   border: none;
   cursor: pointer;
@@ -95,43 +58,96 @@
   color: #000;
 }
 
-/* ───── Floating Tile Menu ───── */
+/* ───── Floating Dropdown Menu ───── */
 .tileFabMenu {
   position: absolute;
-  top: 2.5rem;
+  top: 2.2rem;
+  right: 0;
   display: flex;
-  gap: 0.5rem;
-  background-color: rgba(255, 255, 255, 0.92);
+  flex-direction: column;
+  min-width: 130px;
+  background-color: #fff;
   border: 1px solid #e5e7eb;
   border-radius: 0.5rem;
-  padding: 0.5rem;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
-  z-index: 20;
+  padding: 0.5rem 0.25rem;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  z-index: 30;
+  animation: dropdownFade 0.2s ease-out;
 }
 
-.controlLeft  { left: 0.5rem; }
-.controlRight { right: 0.5rem; }
+.tileFabMenu button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 0.75rem;
+  font-size: 0.9rem;
+  background: none;
+  border: none;
+  color: #333;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  width: 100%;
+  border-radius: 0.375rem;
+}
 
-/* ───── Layout Canvas ───── */
+.tileFabMenu button:hover {
+  background-color: #f3f4f6;
+  color: #000;
+}
+
+@keyframes dropdownFade {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ───── Canvas Container ───── */
 .canvasBlock {
   width: 100%;
   min-height: 100vh;
   padding: 3rem 1.5rem;
-  border-top: 1px solid #5a80bb;
-  border-bottom: 1px solid #285eae;
   display: flex;
   flex-direction: column;
   align-items: center;
+  border-top: 1px solid #5a80bb;
+  border-bottom: 1px solid #285eae;
   transition: background 0.3s;
   position: relative;
+  font-family: 'Caveat', cursive;
 }
 
+/* Themes */
+.white  { background-color: #fff; }
+.grid   {
+  background-color: #f9fafb;
+  background-image: linear-gradient(#e5e7eb 1px, transparent 1px),
+                    linear-gradient(to right, #e5e7eb 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+.dark   {
+  background-color: #1f2937;
+  color: white;
+}
+.paper  {
+  background-color: #fefae0;
+  background-image: radial-gradient(#e0e0d1 1px, transparent 0);
+  background-size: 10px 10px;
+}
+
+/* ✂️ Removed transparent ::before layer — replaced by themes only */
+
+/* ───── Header ───── */
 .canvasHeader {
   display: flex;
-  width: 100%;
-  max-width: 64rem;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
+  max-width: 64rem;
   margin-bottom: 1.5rem;
 }
 
@@ -139,14 +155,17 @@
   font-size: 1.875rem;
   font-weight: 400;
   color: #1f2937;
+  font-family: 'Special Elite', monospace;
+  letter-spacing: 0.5px;
 }
 
+/* ───── Theme Selector ───── */
 .themeSelector {
   padding: 0.5rem 0.75rem;
   border: 1px solid #d1d5db;
   border-radius: 0.375rem;
-  background-color: rgb(44, 44, 44);
-  color: #fff;
+  background-color: #2c2c2c;
+  color: white;
   font-size: 0.875rem;
 }
 
@@ -161,38 +180,45 @@
 }
 
 .tile {
-  transition: all 0.3s ease;
+  transition: transform 0.3s ease;
+  transform: rotate(var(--rotation));
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.tile:hover {
+  box-shadow: 5px 5px 16px rgba(0, 0, 0, 0.15);
+  transform: scale(1.01) rotate(var(--rotation));
 }
 
 .tileSm { grid-column: span 1; }
 .tileMd { grid-column: span 2; }
 .tileLg { grid-column: span 3; }
 
-/* ───── Floating Add Button (FAB) ───── */
+/* ───── FAB ───── */
 .fabWrapper {
   position: fixed;
   bottom: 2rem;
   right: 2rem;
-  z-index: 50;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   gap: 0.5rem;
+  z-index: 50;
 }
 
 .fab {
   background-color: black;
   color: white;
-  border-radius: 9999px;
   width: 3.5rem;
   height: 3.5rem;
+  border-radius: 9999px;
   display: flex;
   justify-content: center;
   align-items: center;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   transition: background 0.3s;
-  border: none;
   cursor: pointer;
+  border: none;
 }
 
 .fab:hover {
@@ -225,25 +251,25 @@
   background: #f3f4f6;
 }
 
-/* ───── Canvas Themes ───── */
-.white {
-  background-color: rgba(255, 255, 255, 0.921);
+/* ───── Tape Effect ───── */
+.tileMeta::before,
+.tileMeta::after {
+  content: '';
+  position: absolute;
+  width: 30px;
+  height: 14px;
+  background: url('/textures/tape.png') no-repeat center;
+  background-size: contain;
+  opacity: 0.8;
 }
 
-.grid {
-  background-color: #f9fafb;
-  background-image: linear-gradient(#e5e7eb 1px, transparent 1px),
-                    linear-gradient(to right, #e5e7eb 1px, transparent 1px);
-  background-size: 20px 20px;
+.tileMeta::before {
+  top: -10px;
+  left: -10px;
+  transform: rotate(-15deg);
 }
-
-.dark {
-  background-color: #1f2937;
-  color: white;
-}
-
-.paper {
-  background-color: #fefae0;
-  background-image: radial-gradient(#e0e0d1 1px, transparent 0);
-  background-size: 10px 10px;
+.tileMeta::after {
+  top: -10px;
+  right: -10px;
+  transform: rotate(15deg);
 }

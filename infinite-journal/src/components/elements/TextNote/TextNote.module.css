@@ -1,14 +1,23 @@
-/* TextNote.module.css */
+/* 🟨 Outer container used by react-rnd */
+.rndWrapper {
+  position: absolute;
+  z-index: 10;
+}
 
+/* 🟫 Main box wrapper inside draggable box */
 .wrapper {
   padding: 0.75rem;
   border-radius: 0.75rem;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  background-color: transparent;
-  display: flex; /* Use flexbox to arrange toolbar and textarea */
-  flex-direction: column; /* Stack toolbar above textarea */
+  background-color: #fff8dc; /* light yellow paper style */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
 }
 
+/* 🛠 Formatting toolbar */
 .toolbar {
   margin-bottom: 0.5rem;
   display: flex;
@@ -22,6 +31,7 @@
   background-color: #f8f8f8;
   cursor: pointer;
   font-size: 0.9rem;
+  transition: background 0.2s;
 }
 
 .toolbar button:hover {
@@ -33,13 +43,15 @@
   font-weight: bold;
 }
 
+/* 📝 Text editor */
 .textarea {
+  flex-grow: 1;
   width: 100%;
-  min-height: 80px;
+  height: 100%;
   padding: 0.75rem;
   border: none;
   outline: none;
-  font-family: sans-serif;
+  font-family: 'Courier New', Courier, monospace;
   font-size: 1rem;
   line-height: 1.5;
   resize: none;
@@ -54,21 +66,16 @@
   font-style: italic;
 }
 
-/* Text decoration classes */
+/* 🎨 Text decorations */
 .bold {
   font-weight: bold;
 }
-
 .italic {
   font-style: italic;
 }
-
 .underline {
   text-decoration: underline;
 }
-
 .strikethrough {
   text-decoration: line-through;
 }
-
-/* You can add more advanced styles here as needed */

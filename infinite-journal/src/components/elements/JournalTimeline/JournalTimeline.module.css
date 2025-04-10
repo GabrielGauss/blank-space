@@ -1,0 +1,45 @@
+.timeline {
+    display: flex;
+    overflow-x: auto;
+    gap: 0.75rem;
+    padding: 1rem 0.5rem;
+    margin-top: 4rem;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .timelineItem {
+    background: #dcdee0;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    border: none;
+    cursor: pointer;
+    min-width: 120px;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    transition: background 0.2s;
+  }
+  
+  .timelineItem:hover {
+    background: #e5e7eb;
+  }
+  
+  .date {
+    font-size: 0.75rem;
+    color: #6b7280;
+  }
+  
+  .mood {
+    font-size: 1.25rem;
+  }
+  
+  .title {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #111827;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
